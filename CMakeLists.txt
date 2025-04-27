@@ -17,10 +17,9 @@ set(SOURCES
    ${SOURCE_DIR}/position.cpp
 )
 
-   # Найти Raylib
+
 find_package(raylib QUIET)
    if (NOT raylib_FOUND)
-       # Если Raylib не найдена, подключаем как внешнюю зависимость
        include(FetchContent)
        FetchContent_Declare(
            raylib
@@ -31,8 +30,7 @@ find_package(raylib QUIET)
    endif()
 
    add_executable(${TARGET_NAME} ${SOURCES})
-
-   # Указать директории с заголовочными файлами
+   
    target_include_directories(${TARGET_NAME} PRIVATE ${SOURCE_DIR})
 
    target_link_libraries(${TARGET_NAME} PRIVATE raylib)
@@ -41,12 +39,10 @@ find_package(raylib QUIET)
        target_link_libraries(${TARGET_NAME} PRIVATE opengl32 gdi32 winmm)
    endif()
 
-   # Для Linux: дополнительные библиотеки
    if (UNIX AND NOT APPLE)
        target_link_libraries(${TARGET_NAME} PRIVATE m GL pthread dl rt X11)
    endif()
 
-   # Копировать ресурсы, если они существуют
    if (EXISTS ${CMAKE_SOURCE_DIR}/Sounds)
        file(COPY ${CMAKE_SOURCE_DIR}/Sounds DESTINATION ${CMAKE_BINARY_DIR})
 endif()
